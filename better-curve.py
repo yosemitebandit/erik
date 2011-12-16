@@ -2,7 +2,6 @@ import sys
 
 import plotter
 
-
 p = plotter.Plotter(
         # hard to measure solo
         160.97
@@ -13,7 +12,7 @@ p = plotter.Plotter(
         , 1.375
         , '/dev/serial/by-id/usb-SchmalzHaus_EiBotBoard-if00')
 
-units = sys.argv[1]
+units = int(sys.argv[1])
 p.move_to_relative([0, units])
 p.move_to_relative([units, 0])
 
