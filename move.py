@@ -1,9 +1,11 @@
 '''
 move.py
 move the pen up, down, left and right
-usage:
-    $ python move.py
+usage, move at 5cm increemnts: 
+    $ python move.py 5
 '''
+import sys
+
 import plotter
 
 p = plotter.Plotter(
@@ -17,7 +19,7 @@ p = plotter.Plotter(
         , 1.375
         , '/dev/serial/by-id/usb-SchmalzHaus_EiBotBoard-if00')
 
-move_distance = 1
+move_distance = int(sys.argv[1])
 position = p.position
 
 while(1):
