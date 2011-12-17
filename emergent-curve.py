@@ -2,7 +2,7 @@
 emergent-curve.py
 draws straight lines between points on the x and y axes to form curves
 usage, 10cm axes with a step of 1/5cm:
-    $ python emergent-curve.py 10 5
+    $ python emergent-curve.py 10 5 1 1
 '''
 import sys
 
@@ -20,18 +20,25 @@ p = plotter.Plotter(
 
 units = int(sys.argv[1])
 scaling = float(sys.argv[2])
+# x and y directions
+direction = [int(sys.argv[3]), int(sys.argv[4])]
 
-p.move_to_relative([0, units])
-p.move_to_relative([units, 0])
+p.move_to_relative([0, direction[1]*units])
+p.move_to_relative([direction[0]*units, 0])
 
 counter = 0
 while(1):
-    p.move_to_relative([-1/scaling, 0])
-    p.move_to_relative([-units+(counter+1)/scaling, -(counter+1)/scaling])
+    p.move_to_relative([-direction[0]/scaling, 0])
+
+    p.move_to_relative([direction[0]*(-units+(counter+1)/scaling)
+        , -direction[1]*(counter+1)/scaling])
     counter += 1
 
-    p.move_to_relative([0, -1/scaling])
-    p.move_to_relative([units-(counter+1)/scaling, (counter+1)/scaling])
+
+    p.move_to_relative([0, -direction[1]/scaling])
+
+    p.move_to_relative([direction[0]*(units-(counter+1)/scaling)
+        , direction[1]*(counter+1)/scaling])
     counter += 1
 
     if counter >= units*scaling:
