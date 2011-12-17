@@ -1,3 +1,9 @@
+'''
+move.py
+move the pen up, down, left and right
+usage:
+    $ python move.py
+'''
 import plotter
 
 p = plotter.Plotter(
@@ -19,13 +25,10 @@ while(1):
 
     # adjust the desired x,y coordinates of the pen head                   
     if direction == 'u':                                                   
-        position = [position[0], position[1]-move_distance]                 
+        p.move_to_relative([0, -move_distance])
     elif direction == 'd':                                                 
-        position = [position[0], position[1]+move_distance]                 
+        p.move_to_relative([0, move_distance])
     elif direction == 'r':                                                 
-        position = [position[0]+move_distance, position[1]]                 
+        p.move_to_relative([move_distance, 0])
     elif direction == 'l':                                                 
-        position = [position[0]-move_distance, position[1]]                 
-
-    p.move_to(position)
-
+        p.move_to_relative([-move_distance, 0])
