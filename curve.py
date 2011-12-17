@@ -15,7 +15,7 @@ p = plotter.Plotter(
         , 1.375
         , '/dev/serial/by-id/usb-SchmalzHaus_EiBotBoard-if00')
 
-units = 30
+units = 10
 
 p.move_to_relative([0, units])
 p.move_to_relative([units, 0])
