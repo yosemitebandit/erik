@@ -52,8 +52,9 @@ class Plotter:
         self.spin_steppers(left_steps, right_steps, duration)
         
         # update the position
-        print self.position, new_position
         self.position = new_position
+
+        # sleep so the commands don't stack..though stacking's seems to be ok
         time.sleep(duration/1000.)
 
 
