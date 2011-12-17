@@ -16,31 +16,17 @@ units = int(sys.argv[1])
 p.move_to_relative([0, units])
 p.move_to_relative([units, 0])
 
-counter = 0
-while(1):
-    p.move_to_relative([-1, 0])
-    p.move_to_relative([-units+counter+1, -counter-1])
-    counter += 1
-
-    p.move_to_relative([0, -1])
-    p.move_to_relative([units-counter-1, counter+1])
-    counter += 1
-
-
-'''
-p.move_to_relative([0, units])
-p.move_to_relative([units, 0])
+scaling = float(sys.argv[2])
 
 counter = 0
 while(1):
-    # second pass, this doesn't subtract enough to get back to the y axis..
-    p.move_to_relative([-units+counter, -1])
+    p.move_to_relative([-1/scaling, 0])
+    p.move_to_relative([-units+(counter+1)/scaling, -(counter+1)/scaling])
     counter += 1
 
-    p.move_to_relative([0, -1])
-    p.move_to_relative([units-counter, counter+1])
+    p.move_to_relative([0, -1/scaling])
+    p.move_to_relative([units-(counter+1)/scaling, (counter+1)/scaling])
     counter += 1
 
-    if counter == units:
+    if counter >= units*scaling:
         break
-'''
