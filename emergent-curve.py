@@ -8,6 +8,11 @@ import sys
 
 import plotter
 
+if '-s' or '--simulate' in sys.argv:
+    simulate_plot = True
+else:
+    simulate_plot = False
+
 p = plotter.Plotter(
         # motor separation..still not quite sure this is right
         160.97
@@ -16,7 +21,10 @@ p = plotter.Plotter(
         # caliper-measured motor radius
         , 1.375
         # path to my controller
-        , '/dev/serial/by-id/usb-SchmalzHaus_EiBotBoard-if00')
+        , '/dev/serial/by-id/usb-SchmalzHaus_EiBotBoard-if00'
+        # simulating this run?
+        , simulate=simulate_plot
+    )
 
 units = int(sys.argv[1])
 scaling = float(sys.argv[2])
@@ -43,3 +51,6 @@ while(1):
 
     if counter >= units*scaling:
         break
+
+# wraps things up
+p.finish()

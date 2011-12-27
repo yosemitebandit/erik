@@ -18,13 +18,61 @@ class Plotter:
         self.height = height
         # radius of motor spindle (cm)
         self.motor_radius = motor_radius
-        # connect to the serial device
-        self.connection = serial.Serial(serial_path, 9600, timeout=1)
         # initialize the pen position (cm)
         self.position = kwargs.pop('initial_position'
             , [motor_separation/2, height/2])
-        # set the pen speed (cm/s)
-        self.speed = kwargs.pop('speed', 1)
+        
+        # simulated run, rendering svg
+        self.simulate = kwargs.pop('simulate', False)
+        if self.simulate:
+            # initialize the svg path data
+            # scaling should be screen's dpi*self.motor_separation
+            # scaling is approximate for now
+            self.svg_scaling = 10
+            self.simulated_path = 'M%s %s' % \
+                tuple([m*self.svg_scaling for m in self.position])
+            #self.pixels_per_cm = 3200/(2*math.pi*self.motor_radius)
+
+        # turning motors, dropping ink
+        else:
+            # connect to the serial device
+            self.connection = serial.Serial(serial_path, 9600, timeout=1)
+            # set the pen speed (cm/s)
+            self.speed = kwargs.pop('speed', 1)
+
+
+    def finish(self):
+        ''' finish and save the simulation
+        could maybe move the pen back to some starting point one day
+        or add a signature, hah
+        '''
+        if self.simulate:
+            svg_contents = '''
+                <svg
+                    version="1.1"
+                    baseProfile="full" 
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="%spx"
+                    height="%spx"
+                >
+                <path d='%s' stroke='blue' fill='transparent' />
+                </svg>
+            ''' % (self.motor_separation*self.svg_scaling \
+                    , self.height*self.svg_scaling \
+                    , self.simulated_path)
+
+            '''
+            output_filename = 'erik-%s.svg' % \
+                time.strftime('%d%h-%H:%m:%S', time.localtime())
+            f = open(output_filename, 'w')
+            f.write(svg_contents)
+            f.close()
+            '''
+            
+            # overwrite the latest sim export
+            f = open('latest-erik-sim.svg', 'w')
+            f.write(svg_contents)
+            f.close()
 
 
     def move_to_relative(self, offset):
@@ -35,27 +83,33 @@ class Plotter:
     
     def move_to(self, new_position):
         ''' move pen to a new position
+        or build the simulated svg path 
         '''
-        # calculate the changes in the guidewire lengths
-        lengths = self._calculate_guidewire_lengths(self.position)
-        new_lengths = self._calculate_guidewire_lengths(new_position)
+        if self.simulate:
+            self.simulated_path += 'L%s %s' % \
+                tuple([m*10 for m in new_position])
+        
+        else:
+            # calculate the changes in the guidewire lengths
+            lengths = self._calculate_guidewire_lengths(self.position)
+            new_lengths = self._calculate_guidewire_lengths(new_position)
 
-        # find how much each motor needs to move to achieve the new lengths
-        left_steps = self._calculate_steps(lengths[0] - new_lengths[0]) * -1
-        right_steps = self._calculate_steps(lengths[1] - new_lengths[1])
+            # find how much each motor needs to move to achieve the new lengths
+            left_steps = self._calculate_steps(lengths[0] - new_lengths[0]) * -1
+            right_steps = self._calculate_steps(lengths[1] - new_lengths[1])
 
-        # duration based on length of move and the speed (ms)
-        duration = 1000.*math.sqrt((new_position[1] - self.position[1])**2
-            + (new_position[0] - self.position[0])**2) / self.speed
+            # duration based on length of move and the speed (ms)
+            duration = 1000.*math.sqrt((new_position[1] - self.position[1])**2
+                + (new_position[0] - self.position[0])**2) / self.speed
 
-        # move the motors
-        self.spin_steppers(left_steps, right_steps, duration)
+            # move the motors
+            self.spin_steppers(left_steps, right_steps, duration)
+            
+            # sleep so the commands don't stack..though stacking's seems to be ok
+            time.sleep(duration/1000.)
         
         # update the position
         self.position = new_position
-
-        # sleep so the commands don't stack..though stacking's seems to be ok
-        time.sleep(duration/1000.)
 
 
     def spin_steppers(self, left_steps, right_steps, duration):
