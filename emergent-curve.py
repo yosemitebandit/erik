@@ -31,6 +31,8 @@ scaling = float(sys.argv[2])
 # x and y directions
 direction = [int(sys.argv[3]), int(sys.argv[4])]
 
+# pen starts at the corner
+p.move_to_relative([0, -direction[1]*units])
 p.move_to_relative([0, direction[1]*units])
 p.move_to_relative([direction[0]*units, 0])
 
