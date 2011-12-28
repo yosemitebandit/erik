@@ -8,7 +8,7 @@ import sys
 
 import plotter
 
-if '-s' or '--simulate' in sys.argv:
+if '--simulate' in sys.argv:
     simulate_plot = True
 else:
     simulate_plot = False
