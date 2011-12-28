@@ -19,7 +19,7 @@ p = plotter.Plotter(
         , 1.375
         , '/dev/serial/by-id/usb-SchmalzHaus_EiBotBoard-if00')
 
-move_distance = int(sys.argv[1])
+move_distance = float(sys.argv[1])
 position = p.position
 
 while(1):

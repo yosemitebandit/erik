@@ -26,7 +26,7 @@ p = plotter.Plotter(
         , simulate=simulate_plot
     )
 
-units = int(sys.argv[1])
+units = float(sys.argv[1])
 scaling = float(sys.argv[2])
 # x and y directions
 direction = [int(sys.argv[3]), int(sys.argv[4])]

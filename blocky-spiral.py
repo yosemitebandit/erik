@@ -26,7 +26,7 @@ p = plotter.Plotter(
         , simulate=simulate_plot
     )
 
-units = int(sys.argv[1])
+units = float(sys.argv[1])
 scaling = float(sys.argv[2])
 
 # initialize the side length
