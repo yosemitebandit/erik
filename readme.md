@@ -39,7 +39,7 @@ there are some scripts inside `bin/` that use the plotting lib
 
 ## origins
  - this has been all over the internet for a while
-   - see Harvey Moon's Kickstarter project for a beautiful example
+   - see [Harvey Moon's Kickstarter project](http://www.kickstarter.com/projects/notever/the-drawing-machine) for a beautiful example
  - SW rebooted from https://github.com/yosemitebandit/plotplot
  - more technical details on driving the steppers at that repo
 
