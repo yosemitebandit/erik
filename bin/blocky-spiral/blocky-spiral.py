@@ -6,14 +6,14 @@ usage, 10cm final square with a step of 1/2cm:
 '''
 import sys
 
-import plotter
+import erik 
 
 if '--simulate' in sys.argv:
     simulate_plot = True
 else:
     simulate_plot = False
 
-p = plotter.Plotter(
+p = erik.Plotter(
         # motor separation..still not quite sure this is right
         160.97
         # height is arbitrary but seems to affect the skew of things

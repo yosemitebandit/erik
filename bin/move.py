@@ -6,9 +6,9 @@ usage, move at 5cm increemnts:
 '''
 import sys
 
-import plotter
+import erik
 
-p = plotter.Plotter(
+p = erik.Plotter(
         # hard to measure solo
         #160.97
         159.5
