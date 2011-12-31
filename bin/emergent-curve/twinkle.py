@@ -21,7 +21,7 @@ p = erik.Plotter(
         # caliper-measured motor radius
         , 1.375
         # path to my controller
-        , '/dev/serial/by-id/usb-SchmalzHaus_EiBotBoard-if00'
+        , serial_path='/dev/serial/by-id/usb-SchmalzHaus_EiBotBoard-if00'
         # simulating this run?
         , simulate=simulate_plot
     )

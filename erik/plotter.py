@@ -10,8 +10,7 @@ import time
 
 
 class Plotter:
-    def __init__(self, motor_separation, height, motor_radius, serial_path
-            , **kwargs):
+    def __init__(self, motor_separation, height, motor_radius, **kwargs):
         # separation between the motor centers (cm)
         self.motor_separation = motor_separation 
         # motors to bottom of canvas (cm)
@@ -29,6 +28,7 @@ class Plotter:
             # scaling should be screen's dpi*self.motor_separation
             # scaling is approximate for now
             self.svg_scaling = 10
+            # initialize the path with the starting position
             self.simulated_path = 'M%s %s' % \
                 tuple([m*self.svg_scaling for m in self.position])
             #self.pixels_per_cm = 3200/(2*math.pi*self.motor_radius)
@@ -36,6 +36,7 @@ class Plotter:
         # turning motors, dropping ink
         else:
             # connect to the serial device
+            serial_path = kwargs.pop('serial_path', None)
             self.connection = serial.Serial(serial_path, 9600, timeout=1)
             # set the pen speed (cm/s)
             self.speed = kwargs.pop('speed', 1)
