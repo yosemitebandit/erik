@@ -32,6 +32,8 @@ class Plotter:
             self.simulated_path = 'M%s %s' % \
                 tuple([m*self.svg_scaling for m in self.position])
             #self.pixels_per_cm = 3200/(2*math.pi*self.motor_radius)
+            self.sim_save_path = kwargs.pop('sim_save_path'
+                , 'latest-erik-sim.svg')
 
         # turning motors, dropping ink
         else:
@@ -62,16 +64,8 @@ class Plotter:
                     , self.height*self.svg_scaling \
                     , self.simulated_path)
 
-            '''
-            output_filename = 'erik-%s.svg' % \
-                time.strftime('%d%h-%H:%m:%S', time.localtime())
-            f = open(output_filename, 'w')
-            f.write(svg_contents)
-            f.close()
-            '''
-            
-            # overwrite the latest sim export
-            f = open('latest-erik-sim.svg', 'w')
+            # save the svg
+            f = open(self.sim_save_path, 'w')
             f.write(svg_contents)
             f.close()
 
