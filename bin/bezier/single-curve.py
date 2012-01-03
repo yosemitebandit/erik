@@ -38,13 +38,14 @@ p3 = _convert_to_point(sys.argv[3])
 # first set of control points
 control_group = [[plotter.initial_position, p1, p2, p3]]
 
-# draw the ctrl points
-plotter.move_to(p1)
-plotter.move_to(p2)
-plotter.move_to(p3)
+if '--control' in sys.argv:
+    # draw the ctrl points
+    plotter.move_to(p1)
+    plotter.move_to(p2)
+    plotter.move_to(p3)
 
-# back to start
-plotter.move_to(plotter.initial_position)
+    # back to start
+    plotter.move_to(plotter.initial_position)
 
 
 # some utilities
