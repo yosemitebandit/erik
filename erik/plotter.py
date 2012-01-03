@@ -20,7 +20,10 @@ class Plotter:
         # initialize the pen position (cm)
         self.position = kwargs.pop('initial_position'
             , [motor_separation/2, height/2])
-        
+        # save this as the starting position as well
+        self.initial_position = kwargs.pop('initial_position'
+            , [motor_separation/2, height/2])
+
         # simulated run, rendering svg
         self.simulate = kwargs.pop('simulate', False)
         if self.simulate:
@@ -74,6 +77,13 @@ class Plotter:
         ''' move by an offset relative to the current position
         '''
         self.move_to([self.position[0]+offset[0], self.position[1]+offset[1]])
+    
+    
+    def move_to_relative_to_start(self, offset):
+        ''' move by an offset relative to the starting position
+        '''
+        self.move_to([self.initial_position[0]+offset[0]
+            , self.initial_position[1]+offset[1]])
 
     
     def move_to(self, new_position):
