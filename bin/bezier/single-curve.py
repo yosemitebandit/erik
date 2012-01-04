@@ -57,8 +57,8 @@ def find_angle(a, b):
 
 
 # de Casteljau - iteratively find control points
-step_fraction = 0.05
-distance_limit = 0.1
+step_fraction = 0.01
+distance_limit = 0.01
 # calculate control points until we go under some distance limit
 k = 0  # kth subsection run
 while(1):
@@ -76,15 +76,20 @@ while(1):
 
         # find angle between two control points 
         angle = find_angle(control_group[k][i+1], control_group[k][i])
-        # above math is busted if control lines forming a V rather than a ^
-        # need to do some quadarant fix or somethin..
+    
+        # find_angle uses atan which only returns quadrants I and IV
+        # if the vector is in II or III, need to multiply by -1
+        if control_group[k][i+1] < control_group[k][i]:
+            forcing = -1
+        else:
+            forcing = 1
 
         # the subsected point is then here:
         subsected_points.append([
             control_group[k][i][0] + step_fraction * distance 
-                * math.cos(angle)
+                * forcing * math.cos(angle)
             , control_group[k][i][1] + step_fraction * distance 
-                * math.sin(angle)
+                * forcing * math.sin(angle)
         ])
 
     # always hold that last control point
