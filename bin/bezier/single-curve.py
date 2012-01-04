@@ -1,8 +1,8 @@
 '''
 single-curve.py
 draw a single bezier curve, mostly for testing
-usage, p0 at start; other points described relatively
-    $ python single-curve.py 3,10 34,8 30,1
+usage, p0 at start; other points described relatively and in quotes
+    $ python single-curve.py '3,10 34,8 30,1'
 '''
 import math
 import sys
@@ -27,23 +27,22 @@ plotter = erik.Plotter(
     , simulate=simulate_plot
 )
 
-def _convert_to_point(point):
-    return [plotter.initial_position[0] + float(point.split(',')[0])
-            , plotter.initial_position[1] + float(point.split(',')[1])]
 
-p1 = _convert_to_point(sys.argv[1])
-p2 = _convert_to_point(sys.argv[2])
-p3 = _convert_to_point(sys.argv[3])
-
-# first set of control points
-control_group = [[plotter.initial_position, p1, p2, p3]]
+# capture all the specified control points
+# they are relative to the plotter's starting point
+specified_control_points = [plotter.initial_position]
+for point in sys.argv[1].split(' '):
+    specified_control_points.append(
+        [plotter.initial_position[0] + float(point.split(',')[0])
+        , plotter.initial_position[1] + float(point.split(',')[1])]
+    )
 
 if '--control' in sys.argv:
-    # draw the ctrl points
-    plotter.move_to(p1)
-    plotter.move_to(p2)
-    plotter.move_to(p3)
-
+    for point in specified_control_points:
+        if point == plotter.initial_position:
+            continue
+        plotter.move_to(point)
+    
     # back to start
     plotter.move_to(plotter.initial_position)
 
@@ -56,7 +55,10 @@ def find_angle(a, b):
     return math.atan((a[1] - b[1]) / (a[0] - b[0]))
 
 
-# de Casteljau - iteratively find control points
+# de Casteljau algorithm - iteratively find control points
+# first set of control points is made up of those specified in input
+control_group = [specified_control_points]
+
 step_fraction = 0.01
 distance_limit = 0.01
 # calculate control points until we go under some distance limit
