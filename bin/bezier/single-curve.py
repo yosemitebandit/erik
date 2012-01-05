@@ -52,6 +52,8 @@ def find_distance(a, b):
     return math.sqrt((a[0] - b[0])**2 + (a[1] - b[1])**2)
 
 def find_angle(a, b):
+    if a[0] == b[0]:   # bit of a cheat to prevent division by zero
+        a[0] += 0.01
     return math.atan((a[1] - b[1]) / (a[0] - b[0]))
 
 
