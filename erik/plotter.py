@@ -45,6 +45,8 @@ class Plotter:
             self.connection = serial.Serial(serial_path, 9600, timeout=1)
             # set the pen speed (cm/s)
             self.speed = kwargs.pop('speed', 1)
+            # do not print commands sent to the board by default
+            self.verbose_commands = kwargs.pop('verbose_commands', False)
 
 
     def finish(self):
@@ -121,7 +123,8 @@ class Plotter:
         ''' send a command to the steppers
         '''
         command = 'SM,%d,%s,%s\r' % (duration, left_steps, right_steps)
-        self.last_command = command
+        if self.verbose_commands:
+            print command
         self.connection.write(command)
 
 
