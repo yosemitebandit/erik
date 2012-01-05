@@ -17,6 +17,7 @@ p = erik.Plotter(
         , 160.97
         # caliper-measured
         , 1.375
+        , speed=3
         , serial_path='/dev/serial/by-id/usb-SchmalzHaus_EiBotBoard-if00')
 
 move_distance = float(sys.argv[1])
