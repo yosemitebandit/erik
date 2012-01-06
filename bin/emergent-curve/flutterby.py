@@ -1,9 +1,10 @@
 '''
-iris.py
-draws two emergent curves opposite one another, forming an 'iris'
+flutterby.py
+draws two emergent curves touching one another, forming a butterfly of sorts
 usage, 10cm axes with a step of 1/5cm
-    $ python iris.py 10 0.2
+    $ python flutterby.py 10 0.2
 '''
+import math
 import sys
 
 from emergent_curve import Emergent
@@ -37,19 +38,13 @@ curve = Emergent(axis_length, step_size, initial_position, quadrant=1)
 path = curve.generate_path()
 full_path.extend(path)
 
-# move to the next starting point
-full_path.append([initial_position[0], initial_position[1] - axis_length])
-full_path.append([initial_position[0] + axis_length
-    , initial_position[1] - axis_length])
-
-# draw the third quadrant
-curve = Emergent(axis_length, step_size, 
-    [initial_position[0] + axis_length, initial_position[1] - axis_length]
-    , quadrant=3)
+# the third quadrant
+curve = Emergent(axis_length, step_size, initial_position, quadrant=3)
 path = curve.generate_path()
 full_path.extend(path)
 
 
+# plot 'em
 for point in full_path:
     plotter.move_to(point)
 

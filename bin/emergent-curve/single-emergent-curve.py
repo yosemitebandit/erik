@@ -1,20 +1,20 @@
 '''
-twinkle.py
-draws four emergent curves with a common corner to form a 'star'
-usage, 10cm axes with a step of 1/5cm
-    $ python twinkle.py 10 0.2
+single-emergent-curve.py
+draws straight lines between points on the x and y axes to form curves
+usage, 10cm axes with a step of 0.2cm in the second quadrant:
+    $ python emergent-curve.py 10 0.2 2
 '''
 import sys
 
 from emergent_curve import Emergent
-import erik 
+import erik
 
 if '--simulate' in sys.argv:
     simulate_plot = True
 else:
     simulate_plot = False
 
-plotter = erik.Plotter(
+p = erik.Plotter(
         # motor separation..still not quite sure this is right
         160.97
         # height is arbitrary but seems to affect the skew of things
@@ -29,19 +29,16 @@ plotter = erik.Plotter(
 
 axis_length = float(sys.argv[1])
 step_size = float(sys.argv[2])
+quadrant = sys.argv[3]
+
 initial_position = [160.97/2, 160.97/2]
 
-full_path = []
-for q in [1, 2, 3, 4]:
-    curve = Emergent(axis_length, step_size, initial_position, quadrant=q)
-    path = curve.generate_path()
 
-    full_path.extend(path)
+curve = Emergent(axis_length, step_size, initial_position, quadrant=quadrant)
+path = curve.generate_path()
 
+for point in path:
+    p.move_to(point)
 
-# draw 'em
-for point in full_path:
-    plotter.move_to(point)
-
-# wraps things up
-plotter.finish()
+# wraps things up with the sim
+p.finish()
