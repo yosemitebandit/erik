@@ -1,8 +1,8 @@
 '''
 flutterby.py
 draws two emergent curves touching one another, forming a butterfly of sorts
-usage, 10cm axes with a step of 1/5cm
-    $ python flutterby.py 10 0.2
+usage, 10cm axes with a step of 1/5cm and pull the 'wings' 30deg 
+    $ python flutterby.py 10 0.2 30
 '''
 import math
 import sys
@@ -30,18 +30,44 @@ plotter = erik.Plotter(
 
 axis_length = float(sys.argv[1])
 step_size = float(sys.argv[2])
+angle = -1*math.pi/180*float(sys.argv[3])
+
 initial_position = [160.97/2, 160.97/2]
 
-full_path = []
 # the first quadrant
 curve = Emergent(axis_length, step_size, initial_position, quadrant=1)
 path = curve.generate_path()
-full_path.extend(path)
 
-# the third quadrant
-curve = Emergent(axis_length, step_size, initial_position, quadrant=3)
-path = curve.generate_path()
-full_path.extend(path)
+# rotate the 'wings' a bit
+path_rotated = []
+for point in path:
+    if point[0] == initial_position[0]:
+        # on the y-axis
+        angle_adjusted = angle + math.pi/2
+    else:
+        angle_adjusted = angle
+
+    d = math.sqrt((initial_position[0] - point[0])**2
+        + (initial_position[1] - point[1])**2)
+
+    path_rotated.append([
+        initial_position[0] + d*math.cos(angle_adjusted)
+        , initial_position[1] + d*math.sin(angle_adjusted)
+    ])
+
+# reflect
+path_reflected = []
+for point in path_rotated:
+    delta_x = point[0] - initial_position[0]
+    path_reflected.append([
+        initial_position[0] - delta_x
+        , point[1]
+    ])
+
+
+full_path = []
+full_path.extend(path_rotated)
+full_path.extend(path_reflected)
 
 
 # plot 'em
