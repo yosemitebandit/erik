@@ -17,7 +17,7 @@ the small library can output SVG or it can actually drive stepper motors
 there are some scripts inside `bin/` that use the plotting lib
 
 #### emergent-curve
- - drawas some straight lines such that they eventually form a curve
+ - draws some straight lines such that they eventually form a curve
 
 #### blocky-spiral
  - drawing a square-shaped spiral starting in the center
