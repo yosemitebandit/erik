@@ -27,9 +27,9 @@ while(1):
     direction = raw_input('specify a direction (udrl): ')                  
 
     # adjust the desired x,y coordinates of the pen head                   
-    if direction == 'u':                                                   
+    if direction == 'd':                                                   
         p.move_to_relative([0, -move_distance])
-    elif direction == 'd':                                                 
+    elif direction == 'u':                                                 
         p.move_to_relative([0, move_distance])
     elif direction == 'r':                                                 
         p.move_to_relative([move_distance, 0])
